@@ -1,31 +1,28 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MarsRovers
 {
-    class Plateau
+    public class Planet
     {
-        private Rover[,] matrix;
+        private string planetName { get; set; }
+
+        private Rover[,] plataeu;
+
         private int MaxXCoordinate { get; set; }
         private int MaxYCoordinate { get; set; }
-        private List<Rover> rovers { get; set; } 
+        private List<Rover> rovers { get; set; }
 
-        public Plateau(int RightXCoordinate, int RightYCoordinate)
+        public Planet(string name)
+        {
+            this.planetName = name;
+        }
+
+        public void SetPlataeu(int RightXCoordinate, int RightYCoordinate)
         {
             MaxXCoordinate = RightXCoordinate;
             MaxYCoordinate = RightYCoordinate;
-            matrix = new Rover[RightXCoordinate, RightYCoordinate];
-            //for (int x = 0; x < RightXCoordinate; x++)
-            //{
-            //    for (int y = 0; y < RightYCoordinate; y++)
-            //    {
-            //        matrix[x, y] = 
-            //    }
-            //}
+            this.plataeu = new Rover[RightXCoordinate + 1, RightYCoordinate + 1];            
         }
 
         public bool AddRover(Rover rover)
@@ -35,7 +32,7 @@ namespace MarsRovers
                  return false;
             }
 
-            this.matrix[rover.XCoordinate, rover.YCoordinate] = rover;
+            this.plataeu[rover.XCoordinate, rover.YCoordinate] = rover;
             return true;
         }
 
@@ -65,42 +62,18 @@ namespace MarsRovers
 
             if (!AreCoordinatesValid(newXCoordinate, newYCoordinate))
             {
-                Console.WriteLine("Cannot Move. New coordinates are not valid");
+                Console.WriteLine("Cannot Move. New coordinates are not valid. Skipping this movement.");
                 return false;
             }
                                     
             rover.XCoordinate = newXCoordinate;
             rover.YCoordinate = newYCoordinate;
-            this.matrix[oldXCoordinate, oldYCoordinate] = null;
-            this.matrix[newXCoordinate, newYCoordinate] = rover;
+            this.plataeu[oldXCoordinate, oldYCoordinate] = null;
+            this.plataeu[newXCoordinate, newYCoordinate] = rover;
             return true;
         }
 
-        public void TurnRover(Rover rover, MarsRovers.Common.MoveDirection direction)
-        {
-            int newDirection = 0;
-            if (direction == Common.MoveDirection.L)
-            {
-                newDirection = (int)rover.RoverDirection + 1;
-            }
-            else
-            {
-                newDirection = (int)rover.RoverDirection - 1;
-            }
-
-            if (newDirection < 0)
-            {
-                rover.RoverDirection = Common.Direction.W;
-            }
-            else if (newDirection > 3)
-            {
-                rover.RoverDirection = Common.Direction.E;
-            }
-            else
-            {
-                rover.RoverDirection = (Common.Direction)newDirection;
-            }
-        }
+       
 
         private bool AreCoordinatesValid(int xCoordinate, int yCoordinate)
         {
@@ -116,7 +89,7 @@ namespace MarsRovers
                 return false;
             }
 
-            if (this.matrix[xCoordinate, yCoordinate] != null)
+            if (this.plataeu[xCoordinate, yCoordinate] != null)
             {
                 Console.WriteLine("There is already a rover at these coordinates");
                 return false;

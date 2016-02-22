@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
+﻿
 namespace MarsRovers
 {
     public class Rover
@@ -15,6 +9,8 @@ namespace MarsRovers
 
         public Common.Direction RoverDirection { get; set; }
 
+        public string Command { get; set; }
+
         public Rover()
         { }
 
@@ -23,6 +19,31 @@ namespace MarsRovers
             this.XCoordinate = xCoordinate;
             this.YCoordinate = yCoordinate;
             this.RoverDirection = direction;
+        }
+        public void Turn(Common.TurnDirection direction)
+        {
+            int newDirection = 0;
+            if (direction == Common.TurnDirection.L)
+            {
+                newDirection = (int)this.RoverDirection + 1;
+            }
+            else
+            {
+                newDirection = (int)this.RoverDirection - 1;
+            }
+
+            if (newDirection < 0)
+            {
+                this.RoverDirection = Common.Direction.S;
+            }
+            else if (newDirection > 3)
+            {
+                this.RoverDirection = Common.Direction.E;
+            }
+            else
+            {
+                this.RoverDirection = (Common.Direction)newDirection;
+            }
         }
     }
 }
